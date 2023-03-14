@@ -1,14 +1,8 @@
-pipeline:
-  identifier: cicd
-  name: CICD
-  projectIdentifier: Ronak
-  orgIdentifier: default
-  tags: {}
-  properties:
+properties:
     ci:
       codebase:
-        connectorRef: ronakforgit
-        repoName: Prod-CI-CD
+        connectorRef: ffsclyh
+        repoName: harness-CI-CD
         build: <+input>
   stages:
     - stage:
@@ -34,7 +28,7 @@ pipeline:
                   type: Run
                   name: Create image
                   spec:
-                    connectorRef: ronakdocker
+                    connectorRef: account.harnessImage
                     image: alpine
                     shell: Sh
                     command: |-
@@ -52,8 +46,8 @@ pipeline:
                   type: BuildAndPushDockerRegistry
                   name: Build and Push an image to docker registry
                   spec:
-                    connectorRef: ronakdocker
-                    repo: ronakpatildocker/public
+                    connectorRef: <+input>
+                    repo: <+input>
                     tags:
                       - latest
                     dockerfile: pythondockerfile
@@ -103,8 +97,8 @@ pipeline:
               type: Service
               name: docker
               spec:
-                connectorRef: ronakdocker
-                image: ronakpatildocker/public
+                connectorRef: <+input>
+                image: <+input>
                 imagePullPolicy: Always
           infrastructure:
             useFromStage: build_test_and_run
@@ -250,11 +244,11 @@ pipeline:
                     issueType: Task
                     fields:
                       - name: Assignee
-                        value: ronak.patil@harness.io
+                        value: email@email.com
                       - name: Description
                         value: approve this  deployment for prod
                       - name: Summary
-                        value: some summary what you want - i cant think of any now - edit  this is in jira create section for approval
+                        value: some summary what you want 
                   timeout: 1d
               - step:
                   identifier: approve_the_issue
@@ -439,5 +433,7 @@ pipeline:
         spec:
           userGroups: []
           recipients:
-            - ronak.patil@harness.io
+            - youremail@.com
       enabled: true
+  identifier: CICD_user_input
+  name: CICD - user input
