@@ -433,7 +433,7 @@ properties:
         spec:
           userGroups: []
           recipients:
-            - youremail@.com
+            - hank.lin@stelligent.com
       enabled: true
   identifier: CICD_user_input
   name: CICD - user input
