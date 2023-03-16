@@ -8,11 +8,11 @@ pipeline:
   delegateSelectors:
     - helm-delegate
   properties:
-      ci:
-        codebase:
-          connectorRef: ffsclyh
-          repoName: harness-CI-CD
-          build: <+input>
+    ci:
+      codebase:
+        connectorRef: ffsclyh
+        repoName: harness-CI-CD
+        build: <+input>
   stages:
     - stage:
         identifier: build_test_and_run
@@ -257,7 +257,7 @@ pipeline:
                       - name: Description
                         value: approve this  deployment for prod
                       - name: Summary
-                        value: some summary what you want 
+                        value: some summary what you want
                   timeout: 1d
               - step:
                   identifier: approve_the_issue
@@ -412,3 +412,34 @@ pipeline:
                       status: Done
                     fields: []
         tags: {}
+  notificationRules:
+    - identifier: Pipeline_Notification
+      name: Pipeline Notification
+      pipelineEvents:
+        - type: StageFailed
+          forStages:
+            - build_test_and_run
+            - test
+            - DEV_ENV
+            - UAT_Approval
+            - UAT_ENV
+            - Prod_Approval
+            - Prod_1_ENV
+            - Prod2_Env
+        - type: StageSuccess
+          forStages:
+            - build_test_and_run
+            - test
+            - DEV_ENV
+            - UAT_Approval
+            - UAT_ENV
+            - Prod_Approval
+            - Prod_1_ENV
+            - Prod2_Env
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups: []
+          recipients:
+            - hank.lin@stelligent.com
+      enabled: true
