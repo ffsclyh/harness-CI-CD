@@ -124,7 +124,7 @@ pipeline:
         spec:
           deploymentType: Kubernetes
           service:
-            serviceRef: microservice1
+            serviceRef: harness-example-svc
             serviceInputs:
               serviceDefinition:
                 type: Kubernetes
