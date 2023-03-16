@@ -1,0 +1,53 @@
+inputSet:
+  pipeline:
+    identifier: Pipeline
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: main
+    stages:
+      - stage:
+          identifier: build_test_and_run
+          type: CI
+          spec:
+            execution:
+              steps:
+                - step:
+                    identifier: Build_and_Push_an_image_to_docker_registry
+                    type: BuildAndPushDockerRegistry
+                    spec:
+                      connectorRef: hankdockerhub
+                      repo: ffsclyh/config-lint
+      - stage:
+          identifier: test
+          type: CI
+          spec:
+            serviceDependencies:
+              - identifier: docker
+                type: Service
+                spec:
+                  connectorRef: sample_docker_connector_1678807820228
+                  image: python:3.10.6-alpine
+      - stage:
+          identifier: DEV_ENV
+          type: Deployment
+          spec:
+            service:
+              serviceInputs:
+                serviceDefinition:
+                  type: Kubernetes
+                  spec:
+                    artifacts:
+                      primary:
+                        sources:
+                          - identifier: docker image artifact
+                            type: DockerRegistry
+                            spec:
+                              tag: app=harness-example
+  name: newtag
+  identifier: newtag
+  orgIdentifier: default
+  projectIdentifier: default_project
