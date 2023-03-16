@@ -1,11 +1,4 @@
 pipeline:
-  name: testk8s
-  identifier: testk8s
-  projectIdentifier: communityeng
-  orgIdentifier: default
-  tags: {}
-  stages:
-    - stage:
   name: Pipeline
   identifier: Pipeline
   projectIdentifier: default_project
@@ -419,37 +412,3 @@ pipeline:
                       status: Done
                     fields: []
         tags: {}
-    variables: []
-    notificationRules:
-      - identifier: Pipeline_Notification
-        name: Pipeline Notification
-        pipelineEvents:
-          - type: StageFailed
-            forStages:
-              - build_test_and_run
-              - test
-              - DEV_ENV
-              - UAT_Approval
-              - UAT_ENV
-              - Prod_Approval
-              - Prod_1_ENV
-              - Prod2_Env
-          - type: StageSuccess
-            forStages:
-              - build_test_and_run
-              - test
-              - DEV_ENV
-              - UAT_Approval
-              - UAT_ENV
-              - Prod_Approval
-              - Prod_1_ENV
-              - Prod2_Env
-        notificationMethod:
-          type: Email
-          spec:
-            userGroups: []
-            recipients:
-              - hank.lin@mphasis.com
-        enabled: true
-    identifier: CICD_user_input
-    name: CICD - user input
