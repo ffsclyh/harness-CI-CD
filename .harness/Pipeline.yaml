@@ -412,3 +412,34 @@ pipeline:
                       status: Done
                     fields: []
         tags: {}
+  notificationRules:
+    - identifier: Pipeline_Notification
+      name: Pipeline Notification
+      pipelineEvents:
+        - type: StageFailed
+          forStages:
+            - build_test_and_run
+            - test
+            - DEV_ENV
+            - UAT_Approval
+            - UAT_ENV
+            - Prod_Approval
+            - Prod_1_ENV
+            - Prod2_Env
+        - type: StageSuccess
+          forStages:
+            - build_test_and_run
+            - test
+            - DEV_ENV
+            - UAT_Approval
+            - UAT_ENV
+            - Prod_Approval
+            - Prod_1_ENV
+            - Prod2_Env
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups: []
+          recipients:
+            - hank.lin@stelligent.com
+      enabled: true
