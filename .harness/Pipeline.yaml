@@ -64,7 +64,7 @@ pipeline:
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: CIk8GCPRonak
+              connectorRef: stelligent
               namespace: default
               automountServiceAccountToken: true
               nodeSelector: {}
