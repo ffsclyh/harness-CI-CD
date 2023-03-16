@@ -235,52 +235,6 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
-    - stage:
-        identifier: UAT_Approval
-        type: Approval
-        name: Prod Approval
-        description: ""
-        spec:
-          execution:
-            steps:
-              - step:
-                  identifier: create_a_issue
-                  type: JiraCreate
-                  name: create a issue
-                  spec:
-                    connectorRef: jira
-                    projectKey: CME
-                    issueType: Task
-                    fields:
-                      - name: Assignee
-                        value: email@email.com
-                      - name: Description
-                        value: approve this  deployment for prod
-                      - name: Summary
-                        value: some summary what you want
-                  timeout: 1d
-              - step:
-                  identifier: approve_the_issue
-                  type: JiraApproval
-                  name: approve the issue
-                  spec:
-                    connectorRef: jira
-                    issueKey: <+pipeline.stages.UAT_Approval.spec.execution.steps.create_a_issue.issue.id>
-                    approvalCriteria:
-                      type: KeyValues
-                      spec:
-                        matchAnyCondition: true
-                        conditions:
-                          - key: Status
-                            operator: equals
-                            value: In Progress
-                    rejectionCriteria:
-                      type: KeyValues
-                      spec:
-                        matchAnyCondition: true
-                        conditions: []
-                  timeout: 1d
-        tags: {}
     - parallel:
         - stage:
             identifier: Prod_1_ENV
@@ -391,27 +345,6 @@ pipeline:
                     - AllErrors
                   action:
                     type: StageRollback
-    - stage:
-        identifier: update_jira
-        type: Approval
-        name: update jira
-        description: ""
-        spec:
-          execution:
-            steps:
-              - step:
-                  identifier: update_issue_to_done
-                  type: JiraUpdate
-                  name: update issue to done
-                  timeout: 5m
-                  spec:
-                    connectorRef: jira
-                    issueKey: <+pipeline.stages.UAT_Approval.spec.execution.steps.create_a_issue.issue.id>
-                    transitionTo:
-                      transitionName: ""
-                      status: Done
-                    fields: []
-        tags: {}
   notificationRules:
     - identifier: Pipeline_Notification
       name: Pipeline Notification
@@ -421,9 +354,7 @@ pipeline:
             - build_test_and_run
             - test
             - DEV_ENV
-            - UAT_Approval
             - UAT_ENV
-            - Prod_Approval
             - Prod_1_ENV
             - Prod2_Env
         - type: StageSuccess
@@ -431,9 +362,7 @@ pipeline:
             - build_test_and_run
             - test
             - DEV_ENV
-            - UAT_Approval
             - UAT_ENV
-            - Prod_Approval
             - Prod_1_ENV
             - Prod2_Env
       notificationMethod:
