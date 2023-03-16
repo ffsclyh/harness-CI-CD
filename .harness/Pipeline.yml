@@ -1,3 +1,11 @@
+name: Pipeline
+identifier: Pipeline
+projectIdentifier: default_project
+orgIdentifier: default
+tags: {}
+allowStageExecutions: true
+delegateSelectors:
+  - helm-delegate
 properties:
     ci:
       codebase:
